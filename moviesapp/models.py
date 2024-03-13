@@ -31,6 +31,6 @@ class Movie(models.Model):
     gener = models.CharField(max_length=20, choices=Genres.choices)
     # I'll make relation between build-in User model and my own model via Many-to-Many relation. This way I'll store
     # each user like for a given movie. Allows this field to be empty
-    users_likes = models.ManyToManyField(User, null=True)
+    users_likes = models.ManyToManyField(User, blank=True)
     # Upload cover img for each movie in moviesapp/covers. Allows this field to be empty
-    cover = models.ImageField(upload_to="moviesapp/covers", null=True)
+    cover = models.ImageField(upload_to="moviesapp/covers", blank=True)
