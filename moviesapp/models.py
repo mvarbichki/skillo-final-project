@@ -34,3 +34,6 @@ class Movie(models.Model):
     users_likes = models.ManyToManyField(User, blank=True)
     # Upload cover img for each movie in moviesapp/covers. Allows this field to be empty
     cover = models.ImageField(upload_to="moviesapp/covers", blank=True)
+
+    def __str__(self):
+        return f"{self.title}, {self.description}, {self.release_year}, {self.director}, {self.gener}"
