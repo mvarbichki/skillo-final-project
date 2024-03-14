@@ -1,1 +1,10 @@
-<p1>TEST MAIN PAGE</p1>
+{% if all_movies %}
+    <h2>Available movies</h2>
+    <ul>
+    {% for movie in all_movies %}
+        <li>Title: {{ movie.title }} | Description: {{ movie.description }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <h2>No movies are available at this moment</h2>
+{% endif %}
