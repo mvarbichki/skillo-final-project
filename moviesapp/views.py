@@ -7,13 +7,10 @@ from .models import Movie
 def main_page(request):
     # gets the content from Movie model
     all_movies = Movie.objects.all()
-    # presents the movies content as dict for rendering
-    movies_context = {
-        "all_movies": all_movies,
-    }
+    # presents the movies content as dict context for the rendering
     return render(request=request,
                   template_name="main_page.html",
-                  context=movies_context
+                  context={"all_movies": all_movies}
                   )
 
-
+# TODO create BaseCommand to show movies content for the CLI logic
