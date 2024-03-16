@@ -14,7 +14,7 @@ class Command(BaseCommand):
             movies_list = [
                 f"Title: {movie.title} | Description: {movie.description}"
                 for movie in all_movies
-                           ]
+            ]
             # Adds a text before listing the content
             self.stdout.write("Available movies")
             for movie in movies_list:
@@ -22,3 +22,5 @@ class Command(BaseCommand):
         # If no movies are available let the user know
         else:
             self.stdout.write("No movies are available at this moment")
+
+# TODO next command have to be in separate py file with proper name

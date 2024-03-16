@@ -1,0 +1,8 @@
+<h1>Title: {{ movie.title }}</h1>
+<p>Description: {{ movie.description }}</p>
+<p>Release year: {{ movie.release_year }}</p>
+<p>Director: {{ movie.director }}</p>
+<p>Gener: {{ movie.gener }}</p>
+<p>Users recommendation: {{ movie.users_likes }}</p>
+<p>{{ movie.cover }}</p>
+<a href="{% url 'listing_page' %}">Back to movies list</a>

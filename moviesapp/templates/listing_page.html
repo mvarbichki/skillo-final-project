@@ -2,7 +2,7 @@
     <h2>Available movies</h2>
     <ul>
     {% for movie in all_movies %}
-        <li>Title: {{ movie.title }} | Description: {{ movie.description }}</li>
+        <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a> | Description: {{ movie.description }}</li>
     {% endfor %}
     </ul>
 {% else %}
