@@ -23,8 +23,7 @@ class Movie(models.Model):
     # has around 200c
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=230)
-    # I'll store the release year as example - 1998, so will use SmallPositiveInt
-    release_year = models.PositiveSmallIntegerField()
+    release_year = models.DateField()
     # I did same check for director name, as longest know human name is around 50c
     director = models.CharField(max_length=53)
     # For gener I'll implement the build in Django option for drop down choices
