@@ -16,7 +16,7 @@ def listing_page(request):
 
 # Details view for given movie that display the whole info about it in separate html page
 def details_page(request, movie_id):
-    # Gets it as object by id and render it. If not existing id is given it will pop - Page not found (404)
+    # Gets it as object by id and render it. If not existing id is given it will pop - http 404
     movie = get_object_or_404(Movie, pk=movie_id)
     return render(request=request,
                   context={"movie": movie},

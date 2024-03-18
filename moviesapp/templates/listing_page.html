@@ -1,9 +1,9 @@
-<!-- If there are any moves ib the movie model it will display them -->
+<!-- If there are any moves in the movie model it will display them -->
 {% if all_movies %}
     <h2>Available movies</h2>
     <ul>
     {% for movie in all_movies %}
-        <!-- hyperlink to redirect the user to full movie details -->
+        <!-- hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
         <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a> | Description: {{ movie.description }}</li>
     {% endfor %}
     </ul>
