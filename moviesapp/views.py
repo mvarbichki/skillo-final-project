@@ -1,5 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Movie
+from .forms import AddMovieForm
 
 
 # The project requirement says the main page has to display movie titles and descriptions
@@ -34,4 +35,18 @@ def search_page(request):
                   context={"results": results}
                   )
 
-# TODO create Django add movie logic
+
+# Add movie logic
+def add_movie_page(request):
+    if request.POST:
+        form = AddMovieForm(request.POST, request.FILES)
+        # if form validation is passed it will record the data in teh DB
+        if form.is_valid():
+            form.save()
+            return redirect(listing_page)
+    return render(request=request,
+                  template_name="add_movie_page.html",
+                  context={"form": AddMovieForm}
+                  )
+
+# TODO find a way to rise messages or redirect to page with message
