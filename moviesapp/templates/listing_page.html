@@ -1,12 +1,16 @@
 <!-- If there are any moves in the movie model it will display them -->
-{% if all_movies %}
-    <h2>Available movies</h2>
-    <ul>
-    {% for movie in all_movies %}
-        <!-- hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
-        <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a> | Description: {{ movie.description }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
+<h2>Available movies</h2>
+{% for movie in all_movies %}
+    <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
+    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a> | Description: {{ movie.description }}</li>
+{% empty %}
     <h2>No movies are available at this moment</h2>
-{% endif %}
+{% endfor %}
+
+<br><br><br>
+<h2>Search for a movie</h2>
+<!-- After insert text it redirects to the search page and displays the result if there are such. Field required -->
+<form action="{% url 'search_page' %}" method="get">
+    <input type="text" name="q" placeholder="type a movie title" required>
+    <button type="submit">Search</button>
+</form>

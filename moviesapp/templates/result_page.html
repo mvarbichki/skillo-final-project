@@ -1,0 +1,9 @@
+<h2>Search results</h2>
+<!-- Iterate throughout searched results if there are such. Results are hyperlinks, the same logic as in the listing page -->
+{% for movie in results %}
+    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a></li>
+{% empty %}
+    <li>No results found</li>
+{% endfor %}
+<br><br>
+<a href="{% url 'listing_page' %}">Back to movies list</a>

@@ -5,7 +5,8 @@ from django.conf import settings
 
 urlpatterns = [
     path("", views.listing_page, name="listing_page"),
-    path("details_page/<int:movie_id>", views.details_page, name="details_page")
+    path("details_page/<int:movie_id>", views.details_page, name="details_page"),
+    path("search_page", views.search_page, name="search_page")
 ]
 
 # Serv the static files/covers img
