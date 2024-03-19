@@ -24,7 +24,7 @@ class AddMovieForm(forms.ModelForm):
         required=True
     )
     # Adds calendar widget
-    release_year = forms.DateField(
+    release_date = forms.DateField(
         label="Release date *",
         required=True,
         widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
@@ -35,9 +35,9 @@ class AddMovieForm(forms.ModelForm):
         required=False
     )
 
-    def clean_release_year(self):
+    def clean_release_date(self):
         # All values are in date() format so they can be compared to each other
-        form_date = self.cleaned_data['release_year']
+        form_date = self.cleaned_data['release_date']
         # Restricting user input date. Minimum date is 1895-12-28 (release date of the first movie)
         min_date = datetime(1895, 12, 28).date()
         # The max date can not exceed today's date because we're adding only existing movies
@@ -49,7 +49,7 @@ class AddMovieForm(forms.ModelForm):
     class Meta:
         model = Movie
         # Fields added in the list will be displayed in the add movie form
-        fields = ["title", "description", "release_year", "director", "gener", "cover"]
+        fields = ["title", "description", "release_date", "director", "gener", "cover"]
 
 
 # Using Django build-in User model as form of registration

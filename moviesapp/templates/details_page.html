@@ -5,11 +5,10 @@
     <p>No cover image available</p>
 {% endif %}
 <p>Description: {{ movie.description }}</p>
-<p>Release date: {{ movie.release_year }}</p>
+<p>Release date: {{ movie.release_date }}</p>
 <p>Director: {{ movie.director }}</p>
 <!-- By .get_gener_display shows the human-readable value from the choices menu-->
 <p>Gener: {{ movie.get_gener_display }}</p>
-<p>Users recommendation: {{ movie.users_likes }}</p>
 <!-- If there is a cover img resize and shows it -->
 <br><br>
 <a href="{% url 'listing_page' %}">Back to movies list</a>

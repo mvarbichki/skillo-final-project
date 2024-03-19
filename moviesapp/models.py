@@ -23,16 +23,13 @@ class Movie(models.Model):
     # has around 200c
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=230)
-    release_year = models.DateField()
+    release_date = models.DateField()
     # I did same check for director name, as longest know human name is around 50c
     director = models.CharField(max_length=53)
     # For gener I'll implement the build in Django option for drop down choices
     gener = models.CharField(max_length=20, choices=Genres.choices)
-    # I'll make relation between build-in User model and my own model via Many-to-Many relation. This way I'll store
-    # each user like for a given movie. Allows this field to be empty
-    users_likes = models.ManyToManyField(User, blank=True)
     # Upload cover img for each movie in moviesapp/covers. Allows this field to be empty
     cover = models.ImageField(upload_to="moviesapp/covers", blank=True)
 
     def __str__(self):
-        return f"{self.title}, {self.description}, {self.release_year}, {self.director}, {self.gener}"
+        return f"{self.title}, {self.description}, {self.release_date}, {self.director}, {self.gener}"

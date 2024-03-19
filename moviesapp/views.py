@@ -92,6 +92,7 @@ def user_logout(request):
     auth.logout(request)
     return redirect(listing_page)
 
-# @login_required(login_url="user_login")
 
-# TODO create favorites logic
+# @login_required(login_url="user_login")
+def favorites_page(request):
+    pass
