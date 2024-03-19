@@ -2,6 +2,9 @@ from datetime import datetime
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Movie
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+from django.forms.widgets import PasswordInput, TextInput
 
 
 # Validation form for adding movie
@@ -47,3 +50,17 @@ class AddMovieForm(forms.ModelForm):
         model = Movie
         # Fields added in the list will be displayed in the add movie form
         fields = ["title", "description", "release_year", "director", "gener", "cover"]
+
+
+# Using Django build-in User model as form of registration
+class RegisterForm(UserCreationForm):
+    class Meta:
+        model = User
+        # password2 is for password conformation
+        fields = ["username", "password1", "password2"]
+
+
+class LoginForm(AuthenticationForm):
+    # Pass widgets as arguments to user and pass
+    username = forms.CharField(widget=TextInput())
+    password = forms.CharField(widget=PasswordInput())
