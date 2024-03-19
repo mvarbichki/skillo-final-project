@@ -32,15 +32,15 @@ class AddMovieForm(forms.ModelForm):
         required=False
     )
 
-    # Restricting user input date. Minimum date is 1895-12-28 (release date of the first movie). Max date is today
     def clean_release_year(self):
-        # All values are in date() format so they could be compared
+        # All values are in date() format so they can be compared to each other
         form_date = self.cleaned_data['release_year']
+        # Restricting user input date. Minimum date is 1895-12-28 (release date of the first movie)
         min_date = datetime(1895, 12, 28).date()
+        # The max date can not exceed today's date because we're adding only existing movies
         max_date = datetime.now().date()
-
-        if form_date < min_date or form_date > max_date:
-            raise ValidationError(f"Date must be within the range {min_date} to {max_date}")
+        if (form_date < min_date) or (form_date > max_date):
+            raise ValidationError(f"Release date must be within the range {min_date} to today's date({max_date})")
         return form_date
 
     class Meta:

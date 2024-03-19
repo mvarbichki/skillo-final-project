@@ -44,9 +44,13 @@ def add_movie_page(request):
         if form.is_valid():
             form.save()
             return redirect(listing_page)
+    else:
+        # If form is not valid it will return the raised exception as message to teh user.
+        # For example, I'm handling release date to be in range
+        form = AddMovieForm()
     return render(request=request,
                   template_name="add_movie_page.html",
-                  context={"form": AddMovieForm}
+                  context={"form": form}
                   )
 
-# TODO find a way to rise messages or redirect to page with message
+# TODO work on favorites logic
