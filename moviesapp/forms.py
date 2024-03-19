@@ -20,7 +20,7 @@ class AddMovieForm(forms.ModelForm):
         label="Director *",
         required=True
     )
-    # adds calendar widget
+    # Adds calendar widget
     release_year = forms.DateField(
         label="Release date *",
         required=True,
@@ -32,8 +32,9 @@ class AddMovieForm(forms.ModelForm):
         required=False
     )
 
-    # Restricting user input date. Minimum date could be 1895-12-28 (release date of teh first movie). Max date is today
+    # Restricting user input date. Minimum date is 1895-12-28 (release date of the first movie). Max date is today
     def clean_release_year(self):
+        # All values are in date() format so they could be compared
         form_date = self.cleaned_data['release_year']
         min_date = datetime(1895, 12, 28).date()
         max_date = datetime.now().date()
@@ -44,5 +45,5 @@ class AddMovieForm(forms.ModelForm):
 
     class Meta:
         model = Movie
-        # fields to be displayed in add movie form
+        # Fields added in the list will be displayed in the add movie form
         fields = ["title", "description", "release_year", "director", "gener", "cover"]

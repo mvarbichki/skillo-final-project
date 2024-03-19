@@ -24,7 +24,7 @@ def details_page(request, movie_id):
                   )
 
 
-# Search view for the search movies logic
+# The view for the search movie logic
 def search_page(request):
     # Gets the searched value from the HTML input name=q
     query = request.GET.get("q")
@@ -40,7 +40,7 @@ def search_page(request):
 def add_movie_page(request):
     if request.POST:
         form = AddMovieForm(request.POST, request.FILES)
-        # if form validation is passed it will record the data in teh DB
+        # If input data is valid, then save it in the DB
         if form.is_valid():
             form.save()
             return redirect(listing_page)
