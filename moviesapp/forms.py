@@ -52,6 +52,13 @@ class AddMovieForm(forms.ModelForm):
         fields = ["title", "description", "release_date", "director", "gener", "cover"]
 
 
+class FavoritesMovieForm(forms.Form):
+    # Creates a query set of all movies presented as a list
+    movie = forms.ModelChoiceField(queryset=Movie.objects.all(),
+                                   label="Select a movie"
+                                   )
+
+
 # Using Django build-in User model as form of registration
 class RegisterForm(UserCreationForm):
     class Meta:
@@ -61,6 +68,5 @@ class RegisterForm(UserCreationForm):
 
 
 class LoginForm(AuthenticationForm):
-    # Pass widgets as arguments to user and pass
     username = forms.CharField(widget=TextInput())
     password = forms.CharField(widget=PasswordInput())

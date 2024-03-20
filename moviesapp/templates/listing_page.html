@@ -1,10 +1,12 @@
+{% include "base.html" %}
+
 <!-- If there are any moves in the movie model it will display them -->
 <h2>Available movies</h2>
 {% for movie in all_movies %}
     <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
     <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a> | Description: {{ movie.description }}</li>
 {% empty %}
-    <h2>No movies are available at this moment</h2>
+    <h3>No movies are available at this moment</h3>
 {% endfor %}
 
 <br><br><br>
@@ -15,6 +17,14 @@
     <button type="submit">Search</button>
 </form>
 
-<br><br>
+<br><br><br>
 <h2>Add movie</h2>
 <a href="{% url 'add_movie_page' %}">Click here to add movie</a>
+
+<br><br><br>
+<h2>Add a movie to favorites</h2>
+<a href="{% url 'add_favorites_page' %}">Click here to add favorite movie</a>
+
+<br><br><br>
+<h2>Show favorites movies</h2>
+<a href="{% url 'show_favorites_page' %}">Click here to add favorites movies</a>

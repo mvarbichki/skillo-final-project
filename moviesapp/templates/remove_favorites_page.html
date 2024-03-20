@@ -1,0 +1,10 @@
+<h1>AAAYour favorite movies</h1>
+{% for favorite in favorites %}
+<li>
+    {{ favorite.movie.title }}
+    <form action="{% url 'remove_favorite_page' favorites.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Remove</button>
+    </form>
+</li>
+{% endfor %}

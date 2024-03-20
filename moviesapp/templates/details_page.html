@@ -1,3 +1,5 @@
+{% include "base.html" %}
+
 <h2>Title: {{ movie.title }}</h2>
 {% if movie.cover %}
     <img style="max-width:300px" src={{ movie.cover.url }}/>

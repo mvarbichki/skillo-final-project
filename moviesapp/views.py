@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Movie
-from .forms import AddMovieForm, RegisterForm, LoginForm
+from .models import Movie, Favorites
+from .forms import AddMovieForm, RegisterForm, LoginForm, FavoritesMovieForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
@@ -93,6 +93,39 @@ def user_logout(request):
     return redirect(listing_page)
 
 
-# @login_required(login_url="user_login")
-def favorites_page(request):
-    pass
+@login_required(login_url="user_login")
+def add_favorites_page(request):
+    # TODO find a way to display only movies that are not in favorites yet
+    form = FavoritesMovieForm()
+    if request.method == "POST":
+        form = FavoritesMovieForm(request.POST)
+        if form.is_valid():
+            # gets the movie id which is passed from the form
+            movie_id = form.cleaned_data["movie"].id
+            movie = get_object_or_404(Movie, pk=movie_id)
+            # Establishing the relation between a user and a movie in the Favorites model
+            Favorites.objects.create(user=request.user, movie=movie)
+            return redirect(show_favorites_page)
+    return render(request=request,
+                  template_name="add_favorites_page.html",
+                  context={"form": form}
+                  )
+
+
+# Decorator that allows only logged-in users to reach the function. If the user is not logged in its redirect
+# to the login page
+@login_required(login_url="user_login")
+def show_favorites_page(request):
+    # Returns pair user-movies from Favorites based the logged user
+    favorites = Favorites.objects.filter(user=request.user)
+    return render(request=request,
+                  template_name="show_favorites_page.html",
+                  context={"favorites": favorites}
+                  )
+
+
+@login_required(login_url="user_login")
+def remove_favorites_page(request, favorite_id):
+    favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
+    favorite.delete()
+    return redirect(show_favorites_page)

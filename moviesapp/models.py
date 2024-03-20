@@ -33,3 +33,11 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title}, {self.description}, {self.release_date}, {self.director}, {self.gener}"
+
+
+# Favorites model will carry the favorites movies logic. It creates relations fk. On to users in the build-in User model
+# and one to Movie model. Via these relations the model keeps all favorites movies for each user.
+# If a given Movie or User model record is deleted the relation will be deleted from Favorites as well
+class Favorites(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)

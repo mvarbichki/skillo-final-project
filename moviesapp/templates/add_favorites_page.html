@@ -1,10 +1,11 @@
 {% include "base.html" %}
 
-<form method="POST" action="{% url 'add_movie_page' %}" enctype="multipart/form-data">
+<h2>Add favorite movie</h2>
+<form method="POST">
     {% csrf_token %}
-    {{ form }}
-    <br>
+    {{ form.as_p }}
     <button>Add</button>
 </form>
+
 <br><br>
 <a href="{% url 'listing_page' %}">Back to movies list</a>
