@@ -1,6 +1,5 @@
 {% include "base.html" %}
 
-<!-- If there are any moves in the movie model it will display them -->
 <h2>Available movies</h2>
 {% for movie in all_movies %}
     <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
@@ -18,13 +17,13 @@
 </form>
 
 <br><br><br>
-<h2>Add movie</h2>
-<a href="{% url 'add_movie_page' %}">Click here to add movie</a>
+<h2>Add a movie to the library</h2>
+<a href="{% url 'add_movie_page' %}">Click here to add a movie to the library</a>
 
 <br><br><br>
-<h2>Add a movie to favorites</h2>
-<a href="{% url 'add_favorites_page' %}">Click here to add favorite movie</a>
+<h2>Add a movie to your favorite</h2>
+<a href="{% url 'add_favorites_page' %}">Click here to add favorite a movie</a>
 
 <br><br><br>
-<h2>Show favorites movies</h2>
-<a href="{% url 'show_favorites_page' %}">Click here to add favorites movies</a>
+<h2>Show your favorite movies</h2>
+<a href="{% url 'show_favorites_page' %}">Click here to show your favorite movies</a>

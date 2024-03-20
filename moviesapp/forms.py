@@ -53,13 +53,13 @@ class AddMovieForm(forms.ModelForm):
 
 
 class FavoritesMovieForm(forms.Form):
-    # Creates a query set of all movies presented as a list
+    # Creates a query set of all movies presented as a list in the HTML allowing the user to select a movie
     movie = forms.ModelChoiceField(queryset=Movie.objects.all(),
                                    label="Select a movie"
                                    )
 
 
-# Using Django build-in User model as form of registration
+# Using the Django built-in User model as a form of registration inheriting all its rules and restrictions
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User

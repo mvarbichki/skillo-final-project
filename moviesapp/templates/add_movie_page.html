@@ -4,7 +4,8 @@
     {% csrf_token %}
     {{ form }}
     <br>
-    <button>Add</button>
+    <button type="submit">Add</button>
 </form>
+
 <br><br>
-<a href="{% url 'listing_page' %}">Back to movies list</a>
+<a href="{% url 'listing_page' %}">Back to main page</a>

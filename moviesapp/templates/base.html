@@ -1,6 +1,9 @@
 <!-- Base template included in all others templates. It contains the login/logout functionality. Also, display the currently logged user -->
+<!-- If there is authenticated user the username is show and the logout option -->
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }} <a href="{% url 'user_logout' %}">Logout</a></p>
 {% else %}
+<!-- If there is no logged-in user it shows only the login option -->
     <p><a href="{% url 'user_login' %}">Login</a></p>
 {% endif %}
+<br>

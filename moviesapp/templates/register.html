@@ -3,9 +3,11 @@
     {% csrf_token %}
     {{ form.as_p }}
     <br>
-    <button>Register</button>
+    <button type="submit">Register</button>
 </form>
+
 <br><br>
 <a href="{% url 'user_login' %}">Login</a>
+
 <br><br>
-<a href="{% url 'listing_page' %}">Back to movies list</a>
+<a href="{% url 'listing_page' %}">Back to main page</a>

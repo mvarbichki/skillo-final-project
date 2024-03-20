@@ -1,6 +1,7 @@
 {% include "base.html" %}
 
 <h2>Title: {{ movie.title }}</h2>
+<!-- If there is a cover img resize and shows it -->
 {% if movie.cover %}
     <img style="max-width:300px" src={{ movie.cover.url }}/>
 {% else %}
@@ -11,6 +12,6 @@
 <p>Director: {{ movie.director }}</p>
 <!-- By .get_gener_display shows the human-readable value from the choices menu-->
 <p>Gener: {{ movie.get_gener_display }}</p>
-<!-- If there is a cover img resize and shows it -->
+
 <br><br>
-<a href="{% url 'listing_page' %}">Back to movies list</a>
+<a href="{% url 'listing_page' %}">Back to main page</a>

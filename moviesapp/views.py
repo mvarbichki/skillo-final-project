@@ -19,7 +19,7 @@ def listing_page(request):
 
 # Details view for given movie that display the whole info about it in separate html page
 def details_page(request, movie_id):
-    # Gets it as object by id and renders it. If not existing id is given it will pop - http 404
+    # Gets the movie by id and renders it. If not existing id is given it will pop - http 404
     movie = get_object_or_404(Movie, pk=movie_id)
     return render(request=request,
                   context={"movie": movie},
@@ -29,7 +29,7 @@ def details_page(request, movie_id):
 
 # The view for the search movie logic
 def search_page(request):
-    # Gets the searched value from the HTML input name=q
+    # Gets the searched value from the HTML input "name=q"
     query = request.GET.get("q")
     # icontains ensures case-insensitive title search
     results = Movie.objects.filter(title__icontains=query)
@@ -42,11 +42,11 @@ def search_page(request):
 # Add movie logic
 def add_movie_page(request):
     # If form is not valid it will return the raised exception as message taken from validation form(AddMovieForm) to
-    # the user. For example, I'm handling release date to be in range
+    # the user. For example, I'm handling the release date to be in a certain range
     form = AddMovieForm()
     if request.POST:
         form = AddMovieForm(request.POST, request.FILES)
-        # If input data is valid, then save it in the DB
+        # If input data is valid, then save the movie in the DB
         if form.is_valid():
             form.save()
             return redirect(listing_page)
@@ -100,7 +100,7 @@ def add_favorites_page(request):
     if request.method == "POST":
         form = FavoritesMovieForm(request.POST)
         if form.is_valid():
-            # gets the movie id which is passed from the form
+            # Gets the movie id which is passed from the form
             movie_id = form.cleaned_data["movie"].id
             movie = get_object_or_404(Movie, pk=movie_id)
             # Establishing the relation between a user and a movie in the Favorites model
@@ -126,6 +126,7 @@ def show_favorites_page(request):
 
 @login_required(login_url="user_login")
 def remove_favorites_page(request, favorite_id):
-    favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
-    favorite.delete()
-    return redirect(show_favorites_page)
+    if request.method == "POST":
+        favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
+        favorite.delete()
+        return redirect(show_favorites_page)
