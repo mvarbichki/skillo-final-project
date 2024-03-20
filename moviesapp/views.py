@@ -7,12 +7,12 @@ from django.contrib.auth.decorators import login_required
 
 
 # The project requirement says the main page has to display movie titles and descriptions
-def listing_page(request):
+def main_page(request):
     # Gets the content from Movie model
     all_movies = Movie.objects.all()
     # Presents the movies as dict context for the rendering
     return render(request=request,
-                  template_name="listing_page.html",
+                  template_name="main_page.html",
                   context={"all_movies": all_movies}
                   )
 
@@ -49,7 +49,7 @@ def add_movie_page(request):
         # If input data is valid, then save the movie in the DB
         if form.is_valid():
             form.save()
-            return redirect(listing_page)
+            return redirect(main_page)
     return render(request=request,
                   template_name="add_movie_page.html",
                   context={"form": form}
@@ -81,7 +81,7 @@ def user_login(request):
             # If authentication is successful allow the user to log in
             if user is not None:
                 auth.login(request, user)
-                return redirect(listing_page)
+                return redirect(main_page)
     return render(request=request,
                   template_name="login.html",
                   context={"form": form}
@@ -90,7 +90,7 @@ def user_login(request):
 
 def user_logout(request):
     auth.logout(request)
-    return redirect(listing_page)
+    return redirect(main_page)
 
 
 @login_required(login_url="user_login")
