@@ -1,0 +1,2 @@
+class FavoriteExistException(Exception):
+    pass

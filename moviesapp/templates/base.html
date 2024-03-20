@@ -6,4 +6,13 @@
 <!-- If there is no logged-in user it shows only the login option -->
     <p><a href="{% url 'user_login' %}">Login</a></p>
 {% endif %}
+
+<br>
+<!-- Returns request error messages for different exceptions -->
+{% if request.error_message %}
+    <div class="alert alert-danger">
+        {{ request.error_message }}
+    </div>
+{% endif %}
+
 <br>

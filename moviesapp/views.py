@@ -4,6 +4,7 @@ from .forms import AddMovieForm, RegisterForm, LoginForm, FavoritesMovieForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from .custom_exceptions import FavoriteExistException
 
 
 # The project requirement says the main page has to display movie titles and descriptions
@@ -56,6 +57,55 @@ def add_movie_page(request):
                   )
 
 
+@login_required(login_url="user_login")
+def add_favorites_page(request):
+    form = FavoritesMovieForm()
+    try:
+        if request.method == "POST":
+            form = FavoritesMovieForm(request.POST)
+            if form.is_valid():
+                # Gets the movie id which is passed from the form
+                movie_id = form.cleaned_data["movie"].id
+                # Search for match by movie id in Favorite
+                existing_favorite_movie = Favorites.objects.filter(movie=movie_id)
+                # If it doesn't return any result it means the movie is not in the user's favorite yet
+                if not existing_favorite_movie:
+                    movie = get_object_or_404(Movie, pk=movie_id)
+                    # Establishing the relation between a user and a movie in the Favorites model
+                    Favorites.objects.create(user=request.user, movie=movie)
+                    return redirect(show_favorites_page)
+                else:
+                    # If the movie is already in the user's favorite it will raise an exception
+                    raise FavoriteExistException("The movie is already in your favorites")
+    except FavoriteExistException as e:
+        # Passing the exception message to the base template
+        request.error_message = str(e)
+    return render(request=request,
+                  template_name="add_favorites_page.html",
+                  context={"form": form}
+                  )
+
+
+# Decorator that allows only logged-in users to reach the function. If the user is not logged in its redirect
+# to the login page
+@login_required(login_url="user_login")
+def show_favorites_page(request):
+    # Returns pair user-movies from Favorites based the logged user
+    favorites = Favorites.objects.filter(user=request.user)
+    return render(request=request,
+                  template_name="show_favorites_page.html",
+                  context={"favorites": favorites}
+                  )
+
+
+@login_required(login_url="user_login")
+def remove_favorites_page(request, favorite_id):
+    if request.method == "POST":
+        favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
+        favorite.delete()
+        return redirect(show_favorites_page)
+
+
 def register(request):
     form = RegisterForm()
     if request.method == "POST":
@@ -91,42 +141,3 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect(main_page)
-
-
-@login_required(login_url="user_login")
-def add_favorites_page(request):
-    # TODO find a way to display only movies that are not in favorites yet
-    form = FavoritesMovieForm()
-    if request.method == "POST":
-        form = FavoritesMovieForm(request.POST)
-        if form.is_valid():
-            # Gets the movie id which is passed from the form
-            movie_id = form.cleaned_data["movie"].id
-            movie = get_object_or_404(Movie, pk=movie_id)
-            # Establishing the relation between a user and a movie in the Favorites model
-            Favorites.objects.create(user=request.user, movie=movie)
-            return redirect(show_favorites_page)
-    return render(request=request,
-                  template_name="add_favorites_page.html",
-                  context={"form": form}
-                  )
-
-
-# Decorator that allows only logged-in users to reach the function. If the user is not logged in its redirect
-# to the login page
-@login_required(login_url="user_login")
-def show_favorites_page(request):
-    # Returns pair user-movies from Favorites based the logged user
-    favorites = Favorites.objects.filter(user=request.user)
-    return render(request=request,
-                  template_name="show_favorites_page.html",
-                  context={"favorites": favorites}
-                  )
-
-
-@login_required(login_url="user_login")
-def remove_favorites_page(request, favorite_id):
-    if request.method == "POST":
-        favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
-        favorite.delete()
-        return redirect(show_favorites_page)

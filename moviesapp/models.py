@@ -41,3 +41,6 @@ class Movie(models.Model):
 class Favorites(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.movie}, {self.user}"
