@@ -38,12 +38,23 @@ class AddMovieForm(forms.ModelForm):
     def clean_release_date(self):
         # All values are in date() format so they can be compared to each other
         form_date = self.cleaned_data['release_date']
+        from_title = self.cleaned_data["title"]
         # Restricting user input date. Minimum date is 1895-12-28 (release date of the first movie)
         min_date = datetime(1895, 12, 28).date()
         # The max date can not exceed today's date because we're adding only existing movies
         max_date = datetime.now().date()
+        # Existing_date, existing_title checks for matches in the model compared to users form data input
+        existing_date = Movie.objects.filter(release_date=form_date).exists()
+        existing_title = Movie.objects.filter(title=from_title).exists()
         if (form_date < min_date) or (form_date > max_date):
-            raise ValidationError(f"Release date must be within the range {min_date} to today's date({max_date})")
+            raise ValidationError(f"Release date must be within the range {min_date} to today's date -{max_date}")
+        # If user attempt to add movie which contains title and release date that's already exist in the model it
+        # raise an exception. After research, I noticed there exist movies with exactly the same names,
+        # but are released on different dates. My solution for this case is to prevent adding movies with same titles
+        # and with exactly the same release date. Same titles are allowed, but with different realise date
+        elif existing_title and existing_date:
+            raise ValidationError(f"A movie {from_title} released on date {form_date} already exist."
+                                  f" Same movie titles are allowed but with different release dates")
         return form_date
 
     class Meta:
