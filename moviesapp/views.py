@@ -86,8 +86,8 @@ def add_favorites_page(request):
             if form.is_valid():
                 # Gets the movie id which is passed from the form
                 movie_id = form.cleaned_data["movie"].id
-                # Search for match by movie id in Favorite
-                existing_favorite_movie = Favorites.objects.filter(movie=movie_id)
+                # Gets if there is a match by movie id and user id in Favorite model
+                existing_favorite_movie = Favorites.objects.filter(movie=movie_id, user=request.user)
                 # If it doesn't return any result it means the movie is not in the user's favorite yet
                 if not existing_favorite_movie:
                     movie = get_object_or_404(Movie, pk=movie_id)
