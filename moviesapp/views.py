@@ -7,13 +7,19 @@ from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
 
 
-# The project requirement says the main page has to display movie titles and descriptions
+# The main page of the web app. It contains all the paths to site functionalities
 def main_page(request):
+    return render(request=request,
+                  template_name="main_page.html"
+                  )
+
+
+def available_movies_page(request):
     # Gets the content from Movie model
     all_movies = Movie.objects.all()
     # Presents the movies as dict context for the rendering
     return render(request=request,
-                  template_name="main_page.html",
+                  template_name="available_movies_page.html",
                   context={"all_movies": all_movies}
                   )
 
@@ -141,3 +147,7 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect(main_page)
+
+# TODO 2 categories:
+# - liked in a genre : counts how many users add the movie as favorite. Display favorites as int
+# - newest in a gener : sort all movies in a given gener by the release date

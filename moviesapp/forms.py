@@ -53,7 +53,7 @@ class AddMovieForm(forms.ModelForm):
         # but are released on different dates. My solution for this case is to prevent adding movies with same titles
         # and with exactly the same release date. Same titles are allowed, but with different realise date
         elif existing_title and existing_date:
-            raise ValidationError(f"A movie {from_title} released on date {form_date} already exist."
+            raise ValidationError(f"A movie {from_title} released on {form_date} already exist."
                                   f" Same movie titles are allowed but with different release dates")
         return form_date
 
