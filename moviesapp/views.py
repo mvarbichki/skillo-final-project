@@ -15,12 +15,22 @@ def main_page(request):
 
 
 def available_movies_page(request):
-    # Gets the content from Movie model
-    all_movies = Movie.objects.all()
+    # Gets the sorting category from the HTML request depending on order_by's value
+    order_by = request.GET.get("order")
+    if order_by == "likes":
+        sorted_movies = Movie.objects.prefetch_related('favorites').all()
+    elif order_by == "release_date":
+        # release date is presented in descending order
+        sorted_movies = Movie.objects.order_by("-release_date")
+    elif order_by == "gener":
+        sorted_movies = Movie.objects.order_by("gener")
+    else:
+        # Gets default order
+        sorted_movies = Movie.objects.all()
     # Presents the movies as dict context for the rendering
     return render(request=request,
                   template_name="available_movies_page.html",
-                  context={"all_movies": all_movies}
+                  context={"sorted_movies": sorted_movies}
                   )
 
 
