@@ -8,7 +8,7 @@
 <h2>Available movies</h2>
 {% for movie in sorted_movies %}
     <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
-    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} - {{ movie.release_date }} </a> | Gener: {{ movie.get_gener_display }} | Description: {{ movie.description }}</li>
+    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} - {{ movie.release_date }} </a> | Gener: {{ movie.get_gener_display }} | Description: {{ movie.description }} | Users rating: {{ movie.num_favorites }}</li>
 {% empty %}
     <h3>No movies are available at this moment</h3>
 {% endfor %}
