@@ -22,15 +22,15 @@ def available_movies_page(request):
     # a movie in favorite
     if order_by == "likes":
         # Release date is presented in descending favorites
-        sorted_movies = Movie.objects.annotate(num_favorites=Count('favorites')).order_by('-num_favorites')
+        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("-num_favorites")
     elif order_by == "release_date":
         # Release date is presented in descending order
-        sorted_movies = Movie.objects.annotate(num_favorites=Count('favorites')).order_by('-release_date')
+        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("-release_date")
     elif order_by == "gener":
-        sorted_movies = Movie.objects.annotate(num_favorites=Count('favorites')).order_by('gener')
+        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("gener")
     else:
         # Gets default order
-        sorted_movies = Movie.objects.annotate(num_favorites=Count('favorites'))
+        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites"))
     # Presents the movies as dict context for the rendering
     return render(request=request,
                   template_name="available_movies_page.html",
@@ -40,10 +40,12 @@ def available_movies_page(request):
 
 # Details view for given movie that display the whole info about it in separate html page
 def details_page(request, movie_id):
-    # Gets the movie by id and renders it. If not existing id is given it will pop - http 404
-    movie = get_object_or_404(Movie, pk=movie_id)
+    # Gets the aggregated query with the counted favorite for all movies
+    movies_with_favorites = Movie.objects.annotate(num_favorites=Count("favorites"))
+    # Gets the result for the given movie by an id
+    movie_elements = movies_with_favorites.filter(pk=movie_id)
     return render(request=request,
-                  context={"movie": movie},
+                  context={"movie_elements": movie_elements},
                   template_name="details_page.html"
                   )
 
