@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.db.models import Count
 from ...models import Movie
+from ...queries_helper import query_sum_favorites_filter
 
 
 class Command(BaseCommand):
@@ -13,9 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         movie_id = options["movie_id"]
         try:
-            movies_with_favorites = Movie.objects.annotate(num_favorites=Count("favorites"))
-            # Gets the result for the given movie by an id
-            movie_elements = movies_with_favorites.filter(pk=movie_id)
+            movie_elements = query_sum_favorites_filter(movie_id)
 
             # Raise exception if the movie not exist
             if not movie_elements.exists():

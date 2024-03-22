@@ -5,6 +5,7 @@ from .models import Movie
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.forms.widgets import PasswordInput, TextInput
+from .queries_helper import query_movie_filter_date_exists, query_movie_filter_title_exists, queryset_movie_form
 
 
 # Validation form for adding movie
@@ -44,10 +45,10 @@ class AddMovieForm(forms.ModelForm):
         # The max date can not exceed today's date because we're adding only existing movies
         max_date = datetime.now().date()
         # Existing_date, existing_title checks for matches in the model compared to users form data input
-        existing_date = Movie.objects.filter(release_date=form_date).exists()
+        existing_date = query_movie_filter_date_exists(form_date)
         # Needs to convert the title from the from-input to upper letters to make the check for existence in the DB
         # this is required because all str data is written as upper() in the DB
-        existing_title = Movie.objects.filter(title=from_title.upper()).exists()
+        existing_title = query_movie_filter_title_exists(from_title.upper())
         if (form_date < min_date) or (form_date > max_date):
             raise ValidationError(f"Release date must be within the range {min_date} to today's date -{max_date}")
         # If user attempt to add movie which contains title and release date that's already exist in the model it
@@ -67,9 +68,7 @@ class AddMovieForm(forms.ModelForm):
 
 class FavoritesMovieForm(forms.Form):
     # Creates a query set of all movies presented as a list in the HTML allowing the user to select a movie
-    movie = forms.ModelChoiceField(queryset=Movie.objects.all(),
-                                   label="Select a movie"
-                                   )
+    movie = queryset_movie_form(forms.ModelChoiceField)
 
 
 # Using the Django built-in User model as a form of registration inheriting all its rules and restrictions

@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand
-from ...models import Movie
+from ...queries_helper import query_sum_favorites
 
 
 class Command(BaseCommand):
     help = "Displaying movies if there any"
 
     def handle(self, *args, **options):
-        all_movies = Movie.objects.all()
+        all_movies = query_sum_favorites()
         # Checks for movies content
         if all_movies:
             movies_list = (

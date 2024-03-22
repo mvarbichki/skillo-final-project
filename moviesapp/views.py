@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Movie, Favorites
+from django.shortcuts import render, redirect
 from .forms import AddMovieForm, RegisterForm, LoginForm, FavoritesMovieForm
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
-from django.db.models import Count
-from django.db.models import Q
+from .queries_helper import query_sum_favorites_ordered, query_sum_favorites, query_sum_favorites_filter, \
+    query_complex, query_favorite_filter_args, query_get_movie_by_id, add_favorites, query_favorite_filter_one, \
+    query_get_favorite_by_args
 
 
 # The main page of the web app. It contains all the paths to site functionalities
@@ -19,19 +19,18 @@ def main_page(request):
 def available_movies_page(request):
     # Gets the sorting category from the HTML request depending on order_by's value
     order_by = request.GET.get("order")
-    # Using annotate (seems like kind of aggregation) to generate query that counts each user who added
-    # a movie in favorite
+
     if order_by == "likes":
         # Release date is presented in descending favorites
-        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("-num_favorites")
+        sorted_movies = query_sum_favorites_ordered("-num_favorites")
     elif order_by == "release_date":
         # Release date is presented in descending order
-        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("-release_date")
+        sorted_movies = query_sum_favorites_ordered("-release_date")
     elif order_by == "gener":
-        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites")).order_by("gener")
+        sorted_movies = query_sum_favorites_ordered("gener")
     else:
         # Gets default order
-        sorted_movies = Movie.objects.annotate(num_favorites=Count("favorites"))
+        sorted_movies = query_sum_favorites()
     # Presents the movies as dict context for the rendering
     return render(request=request,
                   template_name="available_movies_page.html",
@@ -41,10 +40,8 @@ def available_movies_page(request):
 
 # Details view for given movie that display the whole info about it in separate html page
 def details_page(request, movie_id):
-    # Gets the aggregated query with the counted favorite for all movies
-    movies_with_favorites = Movie.objects.annotate(num_favorites=Count("favorites"))
     # Gets the result for the given movie by an id
-    movie_elements = movies_with_favorites.filter(pk=movie_id)
+    movie_elements = query_sum_favorites_filter(movie_id)
     return render(request=request,
                   context={"movie_elements": movie_elements},
                   template_name="details_page.html"
@@ -55,10 +52,7 @@ def details_page(request, movie_id):
 def search_page(request):
     # Gets the searched value from the HTML input "name=q"
     query = request.GET.get("q")
-    # icontains ensures case-insensitive title search. Constructs complex query that use logical operator OR
-    results = Movie.objects.filter(Q(title__icontains=query) |
-                                   Q(director__icontains=query)
-                                   )
+    results = query_complex(query)
     return render(request=request,
                   template_name="result_page.html",
                   context={"results": results}
@@ -91,13 +85,13 @@ def add_favorites_page(request):
             if form.is_valid():
                 # Gets the movie id which is passed from the form
                 movie_id = form.cleaned_data["movie"].id
-                # Gets if there is a match by movie id and user id in Favorite model
-                existing_favorite_movie = Favorites.objects.filter(movie=movie_id, user=request.user)
+                # Gets result if there is a match by movie id and user id in Favorite model
+                existing_favorite_movie = query_favorite_filter_args(movie_id, request.user)
                 # If it doesn't return any result it means the movie is not in the user's favorite yet
                 if not existing_favorite_movie:
-                    movie = get_object_or_404(Movie, pk=movie_id)
+                    movie = query_get_movie_by_id(movie_id)
                     # Establishing the relation between a user and a movie in the Favorites model
-                    Favorites.objects.create(user=request.user, movie=movie)
+                    add_favorites(request.user, movie)
                     return redirect(show_favorites_page)
                 else:
                     # If the movie is already in the user's favorite it will raise an exception
@@ -116,7 +110,7 @@ def add_favorites_page(request):
 @login_required(login_url="user_login")
 def show_favorites_page(request):
     # Returns pair user-movies from Favorites based the logged user
-    favorites = Favorites.objects.filter(user=request.user)
+    favorites = query_favorite_filter_one(request.user)
     return render(request=request,
                   template_name="show_favorites_page.html",
                   context={"favorites": favorites}
@@ -126,7 +120,7 @@ def show_favorites_page(request):
 @login_required(login_url="user_login")
 def remove_favorites_page(request, favorite_id):
     if request.method == "POST":
-        favorite = get_object_or_404(Favorites, pk=favorite_id, user=request.user)
+        favorite = query_get_favorite_by_args(favorite_id, request.user)
         favorite.delete()
         return redirect(show_favorites_page)
 
