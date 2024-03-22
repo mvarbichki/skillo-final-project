@@ -29,13 +29,13 @@ class Movie(models.Model):
     director = models.CharField(max_length=53)
     # For gener I'll implement the build in Django option for drop down choices
     gener = models.CharField(max_length=20, choices=Genres.choices)
-    # Upload cover img for each movie in moviesapp/covers. Allows this field to be empty
+    # Upload cover img for each movie. Allows this field to be empty
     cover = models.ImageField(upload_to="moviesapp/covers", blank=True)
 
     def __str__(self):
         return f"{self.title}, {self.description}, {self.release_date}, {self.director}, {self.gener}"
 
-    # Manipulating the string fields of the model. Before write them in the DB all str data will be converted as
+    # Manipulating the string fields of the model. Before write them in the DB all str data will be converted to
     # upper(). At this point I would like to avoid dealing with words that should be first-letter capital
     def save(self, *args, **kwargs):
         if isinstance(self.title, str):

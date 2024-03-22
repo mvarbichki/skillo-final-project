@@ -72,7 +72,7 @@ def add_movie_page(request):
         # If input data is valid, then save the movie in the DB
         if form.is_valid():
             form.save()
-            return redirect(main_page)
+            return redirect(available_movies_page)
     return render(request=request,
                   template_name="add_movie_page.html",
                   context={"form": form}
@@ -164,5 +164,3 @@ def user_login(request):
 def user_logout(request):
     auth.logout(request)
     return redirect(main_page)
-
-# TODO add exceptions and final retest
