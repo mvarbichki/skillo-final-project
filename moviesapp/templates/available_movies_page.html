@@ -1,11 +1,20 @@
+{% include "base.html" %}
+
+<h2>Search for a movie</h2>
+<!-- After insert text it redirects to the search page and displays the result if there are such. Field required -->
+<form action="{% url 'search_page' %}" method="get">
+    <input type="text" name="q" placeholder="type a movie title" required>
+    <button type="submit">Search</button>
+</form>
+
+<br><br>
+<h2>Available movies</h2>
 <form method="GET" action="{% url 'available_movies_page' %}">
     <!-- Each button returns a different value that triggers a different ordered query in the background -->
     <button type="submit" name="order" value="likes">Sort by user likes</button>
     <button type="submit" name="order" value="release_date">Sort by newest</button>
     <button type="submit" name="order" value="gener">Sort by gener</button>
 </form>
-
-<h2>Available movies</h2>
 {% for movie in sorted_movies %}
     <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->
     <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} - {{ movie.release_date }} </a> | Gener: {{ movie.get_gener_display }} | Description: {{ movie.description }} | Users rating: {{ movie.num_favorites }}</li>

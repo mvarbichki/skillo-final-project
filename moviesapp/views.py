@@ -160,10 +160,9 @@ def user_login(request):
                   )
 
 
+@login_required(login_url="user_login")
 def user_logout(request):
     auth.logout(request)
     return redirect(main_page)
 
-# TODO 2 categories:
-# - liked in a genre : counts how many users add the movie as favorite. Display favorites as int
-# - newest in a gener : sort all movies in a given gener by the release date
+# TODO add exceptions and final retest

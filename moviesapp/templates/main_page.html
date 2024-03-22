@@ -1,13 +1,5 @@
 {% include "base.html" %}
 
-<h2>Search for a movie</h2>
-<!-- After insert text it redirects to the search page and displays the result if there are such. Field required -->
-<form action="{% url 'search_page' %}" method="get">
-    <input type="text" name="q" placeholder="type a movie title" required>
-    <button type="submit">Search</button>
-</form>
-
-<br><br>
 <h2>Available movies</h2>
 <a href="{% url 'available_movies_page' %}">Click here to see all available movies</a>
 
