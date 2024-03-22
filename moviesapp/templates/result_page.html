@@ -3,7 +3,7 @@
 <h2>Search results</h2>
 <!-- Iterate throughout searched results if there are such. Results are hyperlinks, the same logic as in the listing page -->
 {% for movie in results %}
-    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} </a></li>
+    <li><a href="{% url 'details_page' movie.id %}"> Title: {{ movie.title }} - {{ movie.release_date }} </a></li>
 {% empty %}
     <li>No results found</li>
 {% endfor %}
