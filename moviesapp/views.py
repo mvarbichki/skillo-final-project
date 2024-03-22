@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
 from django.db.models import Count
-
+from django.db.models import Q
 
 # The main page of the web app. It contains all the paths to site functionalities
 def main_page(request):
@@ -54,8 +54,10 @@ def details_page(request, movie_id):
 def search_page(request):
     # Gets the searched value from the HTML input "name=q"
     query = request.GET.get("q")
-    # icontains ensures case-insensitive title search
-    results = Movie.objects.filter(title__icontains=query)
+    # icontains ensures case-insensitive title search. Constructs complex query that use logical operator OR
+    results = Movie.objects.filter(Q(title__icontains=query) |
+                                   Q(director__icontains=query)
+                                   )
     return render(request=request,
                   template_name="result_page.html",
                   context={"results": results}
