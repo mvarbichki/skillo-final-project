@@ -8,6 +8,7 @@ from .custom_exceptions import FavoriteExistException
 from django.db.models import Count
 from django.db.models import Q
 
+
 # The main page of the web app. It contains all the paths to site functionalities
 def main_page(request):
     return render(request=request,
