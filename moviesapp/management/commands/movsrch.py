@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from ...queries_helper import query_complex
+from ...utilities import input_required
 
 
 class Command(BaseCommand):
@@ -7,7 +8,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         search_input = input("Search a movie (by title or director): ")
-        results = query_complex(search_input)
+        # Since search logic is required in the Django/HTML, the CLI search logic input required as well
+        required_input = input_required(search_input=search_input,
+                                        input_massage="Input required! Type 'q' to exit or type title/director: "
+                                        )
+        results = query_complex(required_input)
         if results:
             self.stdout.write(self.style.SUCCESS(f"Search results"))
             for result in results:
