@@ -9,6 +9,7 @@ class Command(BaseCommand):
         all_movies = query_sum_favorites()
         # Checks for movies content
         if all_movies:
+            # Gets only the desired information from result in a tuple
             movies_list = (
                 f"Title: {movie.title} - {movie.release_date} | Description: {movie.description}"
                 for movie in all_movies

@@ -4,7 +4,7 @@ from ...queries_helper import query_sum_favorites_filter
 
 
 class Command(BaseCommand):
-    help = "Displaying movie details if the movie exists in the DB"
+    help = "Displaying movie details if the movie exists in the DB. Movie id required"
 
     # Instructs the command to expect an argument. In this case is movie_id
     def add_arguments(self, parser):
