@@ -4,7 +4,8 @@ from ...utilities import input_required
 
 
 class Command(BaseCommand):
-    help = "Search a movie by title or director. User input required after execute the command"
+    help = ("Search a movie by title or director. Here the approach is different and no argument is needed."
+            "User input is required after executing the command")
 
     def handle(self, *args, **options):
         search_input = input("Search a movie (by title or director): ")

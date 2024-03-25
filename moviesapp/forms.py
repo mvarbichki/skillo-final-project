@@ -50,7 +50,7 @@ class AddMovieForm(forms.ModelForm):
         # this is required because all str data is written as upper() in the DB
         existing_title = query_movie_filter_title_exists(from_title.upper())
         if (form_date < min_date) or (form_date > max_date):
-            raise ValidationError(f"Release date must be within the range {min_date} to today's date -{max_date}")
+            raise ValidationError(f"Release date must be within the range {min_date} to today's date: {max_date}")
         # If user attempt to add movie which contains title and release date that's already exist in the model it
         # raise an exception. After research, I noticed there exist movies with exactly the same names,
         # but are released on different dates. My solution for this case is to prevent adding movies with same titles
