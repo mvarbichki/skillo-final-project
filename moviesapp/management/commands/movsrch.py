@@ -8,16 +8,19 @@ class Command(BaseCommand):
             "User input is required after executing the command")
 
     def handle(self, *args, **options):
-        search_input = input("Search a movie (by title or director): ")
-        # Since search logic is required in the Django/HTML, the CLI search logic input required as well
-        required_input = input_required(search_input=search_input,
-                                        input_massage="Input required! Type 'q' to exit or type title/director: "
-                                        )
-        results = query_complex(required_input)
-        if results:
-            self.stdout.write(self.style.SUCCESS(f"Search results"))
-            for result in results:
-                self.stdout.write(self.style.SUCCESS(f"Title: {result.title} {result.release_date}"
-                                                     f" | Director: {result.director}"))
-        else:
-            self.stdout.write(self.style.SUCCESS("No results found"))
+        try:
+            search_input = input("Search a movie (by title or director): ")
+            # Since search logic is required in the Django/HTML, the CLI search logic input required as well
+            required_input = input_required(search_input=search_input,
+                                            input_massage="Input required! Type 'q' to exit or type title/director: "
+                                            )
+            results = query_complex(required_input)
+            if results:
+                self.stdout.write(self.style.SUCCESS("Search results"))
+                for result in results:
+                    self.stdout.write(self.style.SUCCESS(f"Title: {result.title} {result.release_date}"
+                                                         f" | Director: {result.director}"))
+            else:
+                self.stdout.write(self.style.SUCCESS("No results found"))
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))

@@ -2,6 +2,7 @@ from .models import Movie, Favorites
 from django.db.models import Count
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 
 # Using annotate (seems like kind of aggregation) to generate query that counts each user who added
@@ -14,9 +15,9 @@ def query_sum_favorites():
     return Movie.objects.annotate(num_favorites=Count("favorites"))
 
 
-def query_sum_favorites_filter(some_id: int):
+def query_sum_favorites_filter(movie_id: int):
     movies_with_favorites = query_sum_favorites()
-    return movies_with_favorites.filter(pk=some_id)
+    return movies_with_favorites.filter(pk=movie_id)
 
 
 # icontains ensures case-insensitive title search. Constructs complex query that use logical operator OR
@@ -26,24 +27,28 @@ def query_complex(query):
                                 )
 
 
-def query_favorite_filter_args(arg_one: int, arg_two: int):
-    return Favorites.objects.filter(movie=arg_one, user=arg_two)
+def query_favorite_filter_args(movie_id: int, user_id: int):
+    return Favorites.objects.filter(movie=movie_id, user=user_id)
 
 
-def query_get_movie_by_id(some_id: int):
-    return get_object_or_404(Movie, pk=some_id)
+def query_get_movie_by_id(movie_id: int):
+    return get_object_or_404(Movie, pk=movie_id)
 
 
-def add_favorites(user_id: int, movie_id: int):
+def query_get_user_by_id(user_id: int):
+    return get_object_or_404(User, pk=user_id)
+
+
+def query_insert_favorites(user_id: int, movie_id: int):
     return Favorites.objects.create(user=user_id, movie=movie_id)
 
 
-def query_favorite_filter_one(arg: int):
-    return Favorites.objects.filter(user=arg)
+def query_favorite_filter_one(user_id: int):
+    return Favorites.objects.filter(user=user_id)
 
 
-def query_get_favorite_by_args(arg_one: int, arg_two: int):
-    return get_object_or_404(Favorites, pk=arg_one, user=arg_two)
+def query_get_favorite_by_args(favorite_id: int, user_id: int):
+    return get_object_or_404(Favorites, pk=favorite_id, user=user_id)
 
 
 def query_movie_filter_date_exists(some_date):
@@ -59,3 +64,10 @@ def queryset_movie_form(form):
                 label="Select a movie"
                 )
 
+
+def query_user_id_exists(user_id):
+    return User.objects.filter(id=user_id).exists()
+
+
+def query_movie_id_exists(movie_id):
+    return Movie.objects.filter(id=movie_id).exists()

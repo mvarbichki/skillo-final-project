@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
 from .queries_helper import query_sum_favorites_ordered, query_sum_favorites, query_sum_favorites_filter, \
-    query_complex, query_favorite_filter_args, query_get_movie_by_id, add_favorites, query_favorite_filter_one, \
+    query_complex, query_favorite_filter_args, query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, \
     query_get_favorite_by_args
 
 
@@ -91,7 +91,7 @@ def add_favorites_page(request):
                 if not existing_favorite_movie:
                     movie = query_get_movie_by_id(movie_id)
                     # Establishing the relation between a user and a movie in the Favorites model
-                    add_favorites(request.user, movie)
+                    query_insert_favorites(request.user, movie)
                     return redirect(show_favorites_page)
                 else:
                     # If the movie is already in the user's favorite it will raise an exception

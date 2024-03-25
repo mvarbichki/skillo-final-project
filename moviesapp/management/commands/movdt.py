@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from ...models import Movie
+from ...custom_exceptions import MovieNotExistException
 from ...queries_helper import query_sum_favorites_filter
 
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
             # Raise exception if the movie not exist
             if not movie_elements.exists():
-                raise Movie.DoesNotExist
+                raise MovieNotExistException
 
             self.stdout.write("Movie details")
             for element in movie_elements:
@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"Gener: {element.get_gener_display()}")
                 self.stdout.write(f"User ratings: {element.num_favorites }")
 
-        except Movie.DoesNotExist:
+        except MovieNotExistException:
             self.stdout.write(self.style.ERROR(f"Movie with ID {movie_id} does not exist"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
