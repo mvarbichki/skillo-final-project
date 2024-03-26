@@ -35,8 +35,8 @@ class Command(BaseCommand):
         except FavoriteExistException:
             self.stdout.write(self.style.ERROR("The movie is already in your favorites"))
         except UserNotExistException:
-            self.stdout.write(self.style.ERROR("The user not exist"))
+            self.stdout.write(self.style.ERROR(f"User with ID {user_id} does not exist"))
         except MovieNotExistException:
-            self.stdout.write(self.style.ERROR("The movie not exist"))
+            self.stdout.write(self.style.ERROR(f"Movie with ID {movie_id} does not exist"))
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
