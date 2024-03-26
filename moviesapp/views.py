@@ -4,9 +4,9 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
-from .queries_helper import query_sum_favorites_ordered, query_sum_favorites, query_sum_favorites_filter, \
-    query_complex, query_favorite_filter_args, query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, \
-    query_get_favorite_by_args
+from .queries_helper import query_sum_favorites_filter, query_complex, query_favorite_filter_args, \
+                             query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, \
+                             query_get_favorite_by_args, queries_order_picker
 
 
 # The main page of the web app. It contains all the paths to site functionalities
@@ -17,22 +17,9 @@ def main_page(request):
 
 
 def available_movies_page(request):
-    # Gets the sorting category from the HTML request depending on order_by's value
-    order_by = request.GET.get("order")
-    # Default order
-    sorted_movies = query_sum_favorites()
-
-    if order_by == "likes":
-        # Release date is presented in descending favorites. Shows only the first 5 results
-        sorted_movies = query_sum_favorites_ordered("-num_favorites")[:5]
-    elif order_by == "release_date":
-        # Release date is presented in descending order. Shows only the first 5 results
-        sorted_movies = query_sum_favorites_ordered("-release_date")[:5]
-    elif order_by == "gener":
-        sorted_movies = query_sum_favorites_ordered("gener")
-    elif order_by == "default":
-        sorted_movies = query_sum_favorites()
-
+    # Gets the sorting category from the HTML request depending on order value
+    category = request.GET.get("order")
+    sorted_movies = queries_order_picker(order_by=category)
     return render(request=request,
                   template_name="available_movies_page.html",
                   context={"sorted_movies": sorted_movies}

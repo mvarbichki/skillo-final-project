@@ -71,3 +71,18 @@ def query_user_id_exists(user_id):
 
 def query_movie_id_exists(movie_id):
     return Movie.objects.filter(id=movie_id).exists()
+
+
+def queries_order_picker(order_by):
+    if order_by == "likes":
+        # Release date is presented in descending favorites. Shows only the first 5 results
+        return query_sum_favorites_ordered("-num_favorites")[:5]
+    elif order_by == "release_date":
+        # Release date is presented in descending order. Shows only the first 5 results
+        return query_sum_favorites_ordered("-release_date")[:5]
+    elif order_by == "gener":
+        # Returns by alphabetical order of genres
+        return query_sum_favorites_ordered("gener")
+    else:
+        # Default order
+        return query_sum_favorites()
