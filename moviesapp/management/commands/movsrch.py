@@ -4,8 +4,8 @@ from ...utilities import input_required
 
 
 class Command(BaseCommand):
-    help = ("Search a movie by title or director. Here the approach is different and no argument is needed."
-            "User input is required after executing the command")
+    help = "Search a movie by title or director. Here the approach is different and no argument is needed." \
+           "User input is required after executing the command"
 
     def handle(self, *args, **options):
         try:
@@ -16,11 +16,11 @@ class Command(BaseCommand):
                                             )
             results = query_complex(required_input)
             if results:
-                self.stdout.write(self.style.SUCCESS("Search results"))
+                self.stdout.write("Search results")
                 for result in results:
-                    self.stdout.write(self.style.SUCCESS(f"Title: {result.title} {result.release_date}"
-                                                         f" | Director: {result.director}"))
+                    self.stdout.write(f"Title: {result.title} {result.release_date}"
+                                      f" | Director: {result.director}")
             else:
-                self.stdout.write(self.style.SUCCESS("No results found"))
+                self.stdout.write("No results found")
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))

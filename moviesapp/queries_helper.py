@@ -86,3 +86,13 @@ def queries_order_picker(order_by):
     else:
         # Default order
         return query_sum_favorites()
+
+
+def query_insert_movie(title: str, release_date: str, description: str, director: str, gener: str):
+    new_movie = Movie(title=title,
+                      release_date=release_date,
+                      description=description,
+                      director=director,
+                      gener=gener
+                      )
+    new_movie.save()

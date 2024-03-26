@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from ...forms import AddMovieForm
-from ...models import Movie
+from ...queries_helper import query_insert_movie
 
 
 class Command(BaseCommand):
@@ -55,13 +55,13 @@ class Command(BaseCommand):
                 director = form.cleaned_data["director"]
                 gener = form.cleaned_data["gener"]
 
-                new_movie = Movie(title=title,
-                                  release_date=release_date,
-                                  description=description,
-                                  director=director,
-                                  gener=gener
-                                  )
-                new_movie.save()
+                query_insert_movie(title=title,
+                                   release_date=release_date,
+                                   description=description,
+                                   director=director,
+                                   gener=gener
+                                   )
+
                 self.stdout.write(self.style.SUCCESS(f"Movie saved to the database"))
             else:
                 # Unpacks the filed and errors for the form errors
