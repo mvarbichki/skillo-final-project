@@ -21,9 +21,7 @@ class Command(BaseCommand):
             sorted_movies = queries_order_picker(category)
             self.stdout.write(f"Movies result by {category}")
             for movie in sorted_movies:
-                self.stdout.write(f"Title: {movie.title} {movie.release_date} |"
-                                  f" Gener: {movie.get_gener_display()} |"
-                                  f" Description: {movie.description} |"
-                                  f" Users rating: {movie.num_favorites}")
+                self.stdout.write(f"Title: {movie.title} {movie.release_date} | Gener: {movie.get_gener_display()} | "
+                                  f"Description: {movie.description} |  Users rating: {movie.num_favorites}")
         except Exception as e:
             self.stdout.write(self.style.ERROR(f"An error occurred: {e}"))
