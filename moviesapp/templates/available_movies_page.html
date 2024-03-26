@@ -12,9 +12,9 @@
 <form method="GET" action="{% url 'available_movies_page' %}">
     <!-- Each button returns a different value that triggers a different ordered query in the background -->
     <button type="submit" name="order" value="default">Default sort</button>
-    <button type="submit" name="order" value="likes">Sort by user likes</button>
-    <button type="submit" name="order" value="release_date">Sort by newest</button>
     <button type="submit" name="order" value="gener">Sort by gener</button>
+    <button type="submit" name="order" value="likes">Sort by top 5 user likes</button>
+    <button type="submit" name="order" value="release_date">Sort by top 5 newest</button>
 </form>
 {% for movie in sorted_movies %}
     <!-- Hyperlink to redirect the user to full movie details. In addition, sends the movie's id as an argument to details_page func -->

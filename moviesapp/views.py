@@ -19,20 +19,20 @@ def main_page(request):
 def available_movies_page(request):
     # Gets the sorting category from the HTML request depending on order_by's value
     order_by = request.GET.get("order")
-    # Gets default order
+    # Default order
     sorted_movies = query_sum_favorites()
 
     if order_by == "likes":
-        # Release date is presented in descending favorites
+        # Release date is presented in descending favorites. Shows only the first 5 results
         sorted_movies = query_sum_favorites_ordered("-num_favorites")[:5]
     elif order_by == "release_date":
-        # Release date is presented in descending order
+        # Release date is presented in descending order. Shows only the first 5 results
         sorted_movies = query_sum_favorites_ordered("-release_date")[:5]
     elif order_by == "gener":
         sorted_movies = query_sum_favorites_ordered("gener")
     elif order_by == "default":
         sorted_movies = query_sum_favorites()
-    # Presents the movies as dict context for the rendering
+
     return render(request=request,
                   template_name="available_movies_page.html",
                   context={"sorted_movies": sorted_movies}
