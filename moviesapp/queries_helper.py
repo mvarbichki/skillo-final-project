@@ -96,3 +96,8 @@ def query_insert_movie(title: str, release_date: str, description: str, director
                       gener=gener
                       )
     new_movie.save()
+
+
+def query_favorite_delete(favorite_id: int, user_id: int):
+    favorite = query_get_favorite_by_args(favorite_id, user_id)
+    favorite.delete()

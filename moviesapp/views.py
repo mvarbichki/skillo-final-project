@@ -4,9 +4,8 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
-from .queries_helper import query_sum_favorites_filter, query_complex, query_favorite_filter_args, \
-                             query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, \
-                             query_get_favorite_by_args, queries_order_picker
+from .queries_helper import query_sum_favorites_filter, query_complex, query_favorite_filter_args, query_favorite_delete, \
+    query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, queries_order_picker
 
 
 # The main page of the web app. It contains all the paths to site functionalities
@@ -108,8 +107,7 @@ def show_favorites_page(request):
 @login_required(login_url="user_login")
 def remove_favorites_page(request, favorite_id):
     if request.method == "POST":
-        favorite = query_get_favorite_by_args(favorite_id, request.user)
-        favorite.delete()
+        query_favorite_delete(favorite_id=favorite_id, user_id=request.user)
         return redirect(show_favorites_page)
 
 
