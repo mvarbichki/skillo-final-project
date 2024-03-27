@@ -7,7 +7,10 @@ class Command(BaseCommand):
     help = "Shows user favorite movies. Required user ID"
 
     def add_arguments(self, parser):
-        parser.add_argument("user_id", type=int, help="Enter a user ID to to show favorite movies")
+        parser.add_argument("user_id",
+                            type=int,
+                            help="Enter a user ID to to show favorite movies"
+                            )
 
     def handle(self, *args, **options):
         user_id = options["user_id"]

@@ -28,19 +28,27 @@ def query_complex(query):
 
 
 def query_favorite_filter_args(movie_id: int, user_id: int):
-    return Favorites.objects.filter(movie=movie_id, user=user_id)
+    return Favorites.objects.filter(movie=movie_id,
+                                    user=user_id
+                                    )
 
 
 def query_get_movie_by_id(movie_id: int):
-    return get_object_or_404(Movie, pk=movie_id)
+    return get_object_or_404(Movie,
+                             pk=movie_id
+                             )
 
 
 def query_get_user_by_id(user_id: int):
-    return get_object_or_404(User, pk=user_id)
+    return get_object_or_404(User,
+                             pk=user_id
+                             )
 
 
 def query_insert_favorites(user_id: int, movie_id: int):
-    return Favorites.objects.create(user=user_id, movie=movie_id)
+    return Favorites.objects.create(user=user_id,
+                                    movie=movie_id
+                                    )
 
 
 def query_favorite_filter_one(user_id: int):
@@ -48,15 +56,18 @@ def query_favorite_filter_one(user_id: int):
 
 
 def query_get_favorite_by_args(favorite_id: int, user_id: int):
-    return get_object_or_404(Favorites, pk=favorite_id, user=user_id)
+    return get_object_or_404(Favorites,
+                             pk=favorite_id,
+                             user=user_id
+                             )
 
 
-def query_movie_filter_date_exists(some_date):
-    return Movie.objects.filter(release_date=some_date).exists()
+def query_movie_filter_date_exists(date):
+    return Movie.objects.filter(release_date=date).exists()
 
 
-def query_movie_filter_title_exists(some_title: str):
-    return Movie.objects.filter(title=some_title).exists()
+def query_movie_filter_title_exists(movie_title: str):
+    return Movie.objects.filter(title=movie_title).exists()
 
 
 def queryset_movie_form(form):
@@ -73,9 +84,9 @@ def query_movie_id_exists(movie_id):
     return Movie.objects.filter(id=movie_id).exists()
 
 
-def queries_order_picker(order_by):
+def queries_order_picker(order_by: str):
     if order_by == "likes":
-        # Release date is presented in descending favorites. Shows only the first 5 results
+        # User favorites (user likes) are presented in descending favorites. Shows only the first 5 results
         return query_sum_favorites_ordered("-num_favorites")[:5]
     elif order_by == "release_date":
         # Release date is presented in descending order. Shows only the first 5 results

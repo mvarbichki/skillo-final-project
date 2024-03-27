@@ -28,7 +28,7 @@ def available_movies_page(request):
                   )
 
 
-# Details view for given movie that display the whole info about it in separate html page
+# Details view for given movie that display the whole info about it in separate HTML page
 def details_page(request, movie_id):
     # Gets the result for the given movie by an id
     movie_elements = query_sum_favorites_filter(movie_id=movie_id)
@@ -55,11 +55,15 @@ def add_movie_page(request):
     # the user. For example, I'm handling the release date to be in a certain range
     form = AddMovieForm()
     if request.POST:
-        form = AddMovieForm(request.POST, request.FILES)
+        form = AddMovieForm(request.POST,
+                            request.FILES
+                            )
         # If input data is valid, then save the movie in the DB
         if form.is_valid():
             form.save()
-            messages.success(request=request, message="The movie added to the DB successfully")
+            messages.success(request=request,
+                             message="The movie added to the DB successfully"
+                             )
             return redirect(available_movies_page)
     return render(request=request,
                   template_name="add_movie_page.html",
@@ -78,7 +82,9 @@ def remove_movie_page(request):
 def remove_movie(request, movie_id: int):
     if request.method == "POST":
         query_movie_delete(movie_id=movie_id)
-        messages.success(request=request, message="The movie removed from the DB successfully")
+        messages.success(request=request,
+                         message="The movie removed from the DB successfully"
+                         )
         return redirect(available_movies_page)
 
 
@@ -92,12 +98,16 @@ def add_favorites_page(request):
                 # Gets the movie id which is passed from the form
                 movie_id = form.cleaned_data["movie"].id
                 # Gets result if there is a match by movie id and user id in Favorite model
-                existing_favorite_movie = query_favorite_filter_args(movie_id=movie_id, user_id=request.user)
+                existing_favorite_movie = query_favorite_filter_args(movie_id=movie_id,
+                                                                     user_id=request.user
+                                                                     )
                 # If it doesn't return any result it means the movie is not in the user's favorite yet
                 if not existing_favorite_movie:
                     movie = query_get_movie_by_id(movie_id=movie_id)
                     # Establishing the relation between a user and a movie in the Favorites model
-                    query_insert_favorites(user_id=request.user, movie_id=movie)
+                    query_insert_favorites(user_id=request.user,
+                                           movie_id=movie
+                                           )
                     messages.success(request=request,
                                      message=f"{movie.title} added to your favorite movies successfully"
                                      )
@@ -107,7 +117,9 @@ def add_favorites_page(request):
                     raise FavoriteExistException("The movie is already in your favorites")
     except FavoriteExistException as e:
         # Passing the exception message to the base template
-        messages.error(request=request, message=e)
+        messages.error(request=request,
+                       message=e
+                       )
     return render(request=request,
                   template_name="add_favorites_page.html",
                   context={"form": form}
@@ -129,13 +141,16 @@ def show_favorites_page(request):
 @login_required(login_url="user_login")
 def remove_favorite(request, favorite_id):
     if request.method == "POST":
-        query_favorite_delete(favorite_id=favorite_id, user_id=request.user)
+        query_favorite_delete(favorite_id=favorite_id,
+                              user_id=request.user
+                              )
         messages.success(request=request,
                          message=f"The movie removed from your favorite successfully"
                          )
         return redirect(show_favorites_page)
 
 
+# User registration
 def register(request):
     form = RegisterForm()
     if request.method == "POST":
@@ -155,15 +170,22 @@ def register(request):
 def user_login(request):
     form = LoginForm()
     if request.method == "POST":
-        form = LoginForm(request, data=request.POST)
+        form = LoginForm(request,
+                         data=request.POST
+                         )
         if form.is_valid():
             username = request.POST.get("username")
             password = request.POST.get("password")
             # Authenticate the input information by comparing to the User model
-            user = authenticate(request=request, username=username, password=password)
+            user = authenticate(request=request,
+                                username=username,
+                                password=password
+                                )
             # If authentication is successful allow the user to log in
             if user is not None:
-                auth.login(request=request, user=user)
+                auth.login(request=request,
+                           user=user
+                           )
                 messages.success(request=request,
                                  message="Logged in"
                                  )

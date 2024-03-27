@@ -8,11 +8,25 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
 
-        parser.add_argument("title", type=str, help="Title can be maximum 200 characters")
-        parser.add_argument("release_date", type=str, help="Date in format YYYY-MM-DD")
-        parser.add_argument("description", type=str, help="Description can be maximum 230 characters")
-        parser.add_argument("director", type=str, help="Director can be maximum 50 characters")
-        parser.add_argument("gener", type=str, help="""Choose a gener from the first value of the pairs(ex. AN):
+        parser.add_argument("title",
+                            type=str,
+                            help="Title can be maximum 200 characters"
+                            )
+        parser.add_argument("release_date",
+                            type=str,
+                            help="Date in format YYYY-MM-DD"
+                            )
+        parser.add_argument("description",
+                            type=str,
+                            help="Description can be maximum 230 characters"
+                            )
+        parser.add_argument("director",
+                            type=str,
+                            help="Director can be maximum 50 characters"
+                            )
+        parser.add_argument("gener",
+                            type=str,
+                            help="""Choose a gener from the first value of the pairs(ex. AN):
                                                                 HR - HORROR 
                                                                 TR - THRILLER
                                                                 RM - ROMANTIC
@@ -25,7 +39,8 @@ class Command(BaseCommand):
                                                                 MT - MYSTERY
                                                                 MC - MUSICAL
                                                                 CR - CRIME
-                                                                AV - ADVENTURE""")
+                                                                AV - ADVENTURE"""
+                            )
 
     def handle(self, *args, **options):
         try:

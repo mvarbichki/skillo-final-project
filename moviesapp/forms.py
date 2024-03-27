@@ -27,7 +27,8 @@ class AddMovieForm(forms.ModelForm):
         label="Release date *",
         required=True,
         # Adds calendar widget
-        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
+        widget=forms.DateInput(format="%Y-%m-%d",
+                               attrs={"type": "date"}),
         input_formats=["%Y-%m-%d"]
     )
     cover = forms.ImageField(
@@ -36,19 +37,22 @@ class AddMovieForm(forms.ModelForm):
     )
 
     def clean_release_date(self):
-        # access the form input title and release_date
+        # Access the form input title and release_date
         form_date = self.cleaned_data["release_date"]
         from_title = self.cleaned_data["title"]
         # All date values are in date() format so they can be compared to each other
         # Restricting user input minimum date be 1895-12-28 (the first official release date of a movie)
-        min_date = datetime(1895, 12, 28).date()
+        min_date = datetime(year=1895,
+                            month=12,
+                            day=28
+                            ).date()
         # The max date can not exceed today's date because we're adding only existing movies
         max_date = datetime.now().date()
         # Existing_date, existing_title checks for matches in the model compared to users form data input
         existing_date = query_movie_filter_date_exists(form_date)
         # Needs to convert the title from the from-input to upper letters to make the check for existence in the DB
         # this is required because all str data is written as upper() in the DB
-        existing_title = query_movie_filter_title_exists(from_title.upper())
+        existing_title = query_movie_filter_title_exists(movie_title=from_title.upper())
         if (form_date < min_date) or (form_date > max_date):
             raise ValidationError(f"Release date must be within the range {min_date} to today's date: {max_date}")
         # If user attempt to add movie which contains title and release date that's already exist in the model it
@@ -68,7 +72,7 @@ class AddMovieForm(forms.ModelForm):
 
 class FavoritesMovieForm(forms.Form):
     # Creates a query set of all movies presented as a list in the HTML allowing the user to select a movie
-    movie = queryset_movie_form(forms.ModelChoiceField)
+    movie = queryset_movie_form(form=forms.ModelChoiceField)
 
 
 # Using the Django built-in User model as a form of registration inheriting all its rules and restrictions

@@ -5,9 +5,9 @@
 {% for movie in movies %}
 <li>
     Title: {{ movie.title }} | Release date: {{ movie.release_date }}
-    <form id="remove_movie_form_{{ movie.id }}" action="{% url 'remove_movie' movie.id %}" method="POST">
+    <form id='remove_movie_form_{{ movie.id }}' action="{% url 'remove_movie' movie.id %}" method='POST'>
         {% csrf_token %}
-        <button type="button" onclick="confirmRemove({{ movie.id }})">Remove</button>
+        <button type='button' onclick='confirmRemove({{ movie.id }})'>Remove</button>
     </form>
 </li>
 {% empty %}

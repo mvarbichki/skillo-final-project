@@ -1,11 +1,11 @@
 {% include "base.html" %}
 
 <h2>Add favorite movie</h2>
-<form method="POST">
+<form method='POST'>
     {% csrf_token %}
     {{ form.as_p }}
     <br>
-    <button type="submit">Add</button>
+    <button type='submit'>Add</button>
 </form>
 
 <br><br>

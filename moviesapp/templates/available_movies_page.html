@@ -2,7 +2,7 @@
 
 <h2>Search for a movie</h2>
 <!-- After insert text it redirects to the search page and displays the result if there are such. Field required -->
-<form action="{% url 'search_page' %}" method="get">
+<form action="{% url 'search_page' %}" method="GET">
     <input type="text" name="q" placeholder="type a movie title or director" required>
     <button type="submit">Search</button>
 </form>

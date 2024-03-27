@@ -8,12 +8,15 @@ class Command(BaseCommand):
 
     # Instructs the command to expect an argument. In this case is movie_id
     def add_arguments(self, parser):
-        parser.add_argument("movie_id", type=int, help="Enter the id of the movie you want to details for")
+        parser.add_argument("movie_id",
+                            type=int,
+                            help="Enter the id of the movie you want to details for"
+                            )
 
     def handle(self, *args, **options):
         movie_id = options["movie_id"]
         try:
-            movie_elements = query_sum_favorites_filter(movie_id)
+            movie_elements = query_sum_favorites_filter(movie_id=movie_id)
 
             # Raise exception if the movie not exist
             if not movie_elements.exists():

@@ -7,7 +7,10 @@ class Command(BaseCommand):
     help = "Remove a movie. Required movie ID"
 
     def add_arguments(self, parser):
-        parser.add_argument("movie_id", type=int, help="Enter the id of the movie you want to delete")
+        parser.add_argument("movie_id",
+                            type=int,
+                            help="Enter the id of the movie you want to delete"
+                            )
 
     def handle(self, *args, **options):
         movie_id = options["movie_id"]

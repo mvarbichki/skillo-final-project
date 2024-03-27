@@ -28,9 +28,13 @@ class Movie(models.Model):
     # I did same check for director name, as longest know human name is around 50c
     director = models.CharField(max_length=53)
     # For gener I'll implement the build in Django option for drop down choices
-    gener = models.CharField(max_length=20, choices=Genres.choices)
+    gener = models.CharField(max_length=20,
+                             choices=Genres.choices
+                             )
     # Upload cover img for each movie. Allows this field to be empty
-    cover = models.ImageField(upload_to="moviesapp/covers", blank=True)
+    cover = models.ImageField(upload_to="moviesapp/covers",
+                              blank=True
+                              )
 
     def __str__(self):
         return f"{self.title}, {self.description}, {self.release_date}, {self.director}, {self.gener}"
@@ -52,8 +56,12 @@ class Movie(models.Model):
 # and one to the Movie model. Via these relations the Favorites keeps all favorite movies for each user.
 # If a given Movie or User model record is deleted the relation will be deleted from Favorites as well
 class Favorites(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE
+                             )
+    movie = models.ForeignKey(Movie,
+                              on_delete=models.CASCADE
+                              )
 
     def __str__(self):
         return f"{self.movie}, {self.user}"
