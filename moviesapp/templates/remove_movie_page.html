@@ -1,12 +1,13 @@
 {% include "base.html" %}
 
 <h2>Available movies</h2>
+
 {% for movie in movies %}
 <li>
     Title: {{ movie.title }} | Release date: {{ movie.release_date }}
-    <form action="{% url 'remove_movie' movie.id %}" method="POST">
+    <form id="remove_movie_form_{{ movie.id }}" action="{% url 'remove_movie' movie.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit">Remove</button>
+        <button type="button" onclick="confirmRemove({{ movie.id }})">Remove</button>
     </form>
 </li>
 {% empty %}
@@ -15,3 +16,12 @@
 
 <br><br>
 <a href="{% url 'main_page' %}">Back to main page</a>
+<!-- The remove button calls the JavaScript popup that asks for confirmation before removing the movie -->
+<script>
+function confirmRemove(movieId) {
+    var confirmation = confirm("Are you sure you want to remove this movie?");
+    if (confirmation) {
+        document.getElementById('remove_movie_form_' + movieId).submit();
+    }
+}
+</script>
