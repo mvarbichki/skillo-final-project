@@ -8,11 +8,18 @@
 {% endif %}
 
 <br>
-<!-- Returns request error messages for different exceptions -->
-{% if request.error_message %}
-    <div class="alert alert-danger">
-        {{ request.error_message }}
-    </div>
+<!-- Depending on the message tag returns successful or error message  -->
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <b><font color="#FF0000">{{ message }}</font></b>
+            </div>
+        {% elif message.tags == 'success' %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <b><font color="#008000">{{ message }}</font></b>
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endif %}
-
 <br>

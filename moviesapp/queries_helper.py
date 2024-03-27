@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 
 # Using annotate (seems like kind of aggregation) to generate query that counts each user who added
 # a movie in favorite
-def query_sum_favorites_ordered(order: str):
-    return Movie.objects.annotate(num_favorites=Count("favorites")).order_by(order)
+def query_sum_favorites_ordered(order_by: str):
+    return Movie.objects.annotate(num_favorites=Count("favorites")).order_by(order_by)
 
 
 def query_sum_favorites():
