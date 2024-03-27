@@ -3,7 +3,7 @@ from ...queries_helper import query_sum_favorites
 
 
 class Command(BaseCommand):
-    help = "Displaying movies if there any"
+    help = "Displaying all movies"
 
     def handle(self, *args, **options):
         try:

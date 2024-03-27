@@ -8,8 +8,8 @@ class Command(BaseCommand):
     help = "Adding a movie to favorite. Required user ID and movie ID"
 
     def add_arguments(self, parser):
-        parser.add_argument("user_id", type=int, help="Provide a user ID to which adding the favorite movie")
-        parser.add_argument("movie_id", type=int, help="Provide the movie_ID of the desired movie")
+        parser.add_argument("user_id", type=int, help="Enter a user ID to which adding the favorite movie")
+        parser.add_argument("movie_id", type=int, help="Enter the movie_ID of the desired movie")
 
     def handle(self, *args, **options):
         movie_id = options["movie_id"]
