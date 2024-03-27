@@ -5,9 +5,9 @@
 <li>
     <!-- By .title reaches the title via the Favorites model. The same applies for the release date -->
     Title: {{ favorite.movie.title }} | Release date: {{ favorite.movie.release_date }}
-    <form action="{% url 'remove_favorite' favorite.id %}" method="POST">
+    <form id="remove_favorite_movie_form_{{ favorite.id }}"  action="{% url 'remove_favorite' favorite.id %}" method="POST">
         {% csrf_token %}
-        <button type="submit">Remove</button>
+        <button type="button" onclick="confirmRemove({{ favorite.id }})">Remove</button>
     </form>
 </li>
 {% empty %}
@@ -16,3 +16,13 @@
 
 <br><br>
 <a href="{% url 'main_page' %}">Back to main page</a>
+
+<!-- The remove button calls the JavaScript popup that asks for confirmation before removing the movie from favorite -->
+<script>
+function confirmRemove(favoriteId) {
+    var confirmation = confirm("Are you sure you want to remove this movie from your favorite?");
+    if (confirmation) {
+        document.getElementById('remove_favorite_movie_form_' + favoriteId).submit();
+    }
+}
+</script>
