@@ -4,8 +4,10 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from .custom_exceptions import FavoriteExistException
-from .queries_helper import query_sum_favorites_filter, query_complex, query_favorite_filter_args, query_favorite_delete, \
-    query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, queries_order_picker
+from .queries_helper import query_sum_favorites_filter, query_complex, query_favorite_filter_args, \
+    query_favorite_delete, \
+    query_get_movie_by_id, query_insert_favorites, query_favorite_filter_one, queries_order_picker, \
+    query_sum_favorites_ordered, query_movie_delete
 
 
 # The main page of the web app. It contains all the paths to site functionalities
@@ -63,6 +65,20 @@ def add_movie_page(request):
                   )
 
 
+def remove_movie_page(request):
+    movies = query_sum_favorites_ordered("title")
+    return render(request=request,
+                  template_name="remove_movie_page.html",
+                  context={"movies": movies}
+                  )
+
+
+def remove_movie(request, movie_id: int):
+    if request.method == "POST":
+        query_movie_delete(movie_id=movie_id)
+        return redirect(available_movies_page)
+
+
 @login_required(login_url="user_login")
 def add_favorites_page(request):
     form = FavoritesMovieForm()
@@ -105,7 +121,7 @@ def show_favorites_page(request):
 
 
 @login_required(login_url="user_login")
-def remove_favorites_page(request, favorite_id):
+def remove_favorite(request, favorite_id):
     if request.method == "POST":
         query_favorite_delete(favorite_id=favorite_id, user_id=request.user)
         return redirect(show_favorites_page)

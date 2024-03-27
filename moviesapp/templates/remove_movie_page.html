@@ -1,0 +1,17 @@
+{% include "base.html" %}
+
+<h2>Available movies</h2>
+{% for movie in movies %}
+<li>
+    Title: {{ movie.title }} | Release date: {{ movie.release_date }}
+    <form action="{% url 'remove_movie' movie.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Remove</button>
+    </form>
+</li>
+{% empty %}
+    <h3>No movies are available at this moment</h3>
+{% endfor %}
+
+<br><br>
+<a href="{% url 'main_page' %}">Back to main page</a>

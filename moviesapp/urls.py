@@ -14,7 +14,9 @@ urlpatterns = [
     path("user_logout", views.user_logout, name="user_logout"),
     path("add_favorites_page", views.add_favorites_page, name="add_favorites_page"),
     path("show_favorites_page", views.show_favorites_page, name="show_favorites_page"),
-    path("remove_favorites_page/<int:favorite_id>", views.remove_favorites_page, name="remove_favorites_page")
+    path("remove_favorite/<int:favorite_id>", views.remove_favorite, name="remove_favorite"),
+    path("remove_movie_page", views.remove_movie_page, name="remove_movie_page"),
+    path("remove_movie/<int:movie_id>", views.remove_movie, name="remove_movie")
 ]
 
 # Serv the static files/covers img
