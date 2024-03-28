@@ -18,6 +18,20 @@ def main_page(request):
                   )
 
 
+# Contains the paths to library movie management
+def movies_management_page(request):
+    return render(request=request,
+                  template_name="movies_management_page.html"
+                  )
+
+
+# Contains the paths to user favorite movie management
+def favorite_management_page(request):
+    return render(request=request,
+                  template_name="favorite_management_page.html"
+                  )
+
+
 def available_movies_page(request):
     # Gets the sorting category from the HTML request depending on order value
     category = request.GET.get("order")

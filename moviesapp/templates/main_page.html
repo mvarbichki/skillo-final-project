@@ -1,20 +1,15 @@
 {% include "base.html" %}
 
-<h2>Available movies</h2>
-<a href="{% url 'available_movies_page' %}">Click here to see all available movies</a>
+<br><br>
+<h1><b>Movie library</b></h1>
 
-<br><br><br>
-<h2>Add a movie to the library</h2>
-<a href="{% url 'add_movie_page' %}">Click here to add a movie</a>
+<br><br>
+<a href="{% url 'available_movies_page' %}"><h2>Available movies</h2></a>
 
-<br><br><br>
-<h2>Remove a movie from the library</h2>
-<a href="{% url 'remove_movie_page' %}">Click here to remove a movie</a>
+<br>
+<a href="{% url 'movies_management_page' %}"><h2>Library movies management</h2></a>
 
-<br><br><br>
-<h2>Add a movie to your favorite</h2>
-<a href="{% url 'add_favorites_page' %}">Click here to add favorite movie</a>
+<br>
+<a href="{% url 'favorite_management_page' %}"><h2>Favorite movies management</h2></a>
 
-<br><br><br>
-<h2>Show your favorite movies</h2>
-<a href="{% url 'show_favorites_page' %}">Click here to show your favorite movies</a>
+
